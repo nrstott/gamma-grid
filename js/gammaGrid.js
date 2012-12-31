@@ -59,6 +59,7 @@
        var obj = data[i];
        columns = columns || obj; //if no columns are set then assume them all.
        if (isHeader){
+        var thead = $("<thead />");
         for (var key in columns){
           if (key == "id"){ 
             var headerRow =  $("<th class='gammaGridColumnHeader'></th>");
@@ -71,7 +72,7 @@
                 $("tr.gammaGridRow", tbl).removeClass("selected");
               }                  
             })
-            headerRow.append(selectAll);
+            headerRow.append(selectAll);            
             tr.append(headerRow);
           }else{
             var shouldSort = columns[key].sort ? columns[key].sort : false;
@@ -97,8 +98,9 @@
             tr.append(th);
           }
          }
+         thead.append(tr);
+         tbl.append(thead);
          isHeader = false;
-         tbl.append(tr);
          tr = $("<tr class='gammaGridRow' />");
        }
       for (var key in columns){
