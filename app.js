@@ -36,12 +36,12 @@ router.get('/api/users', function(req) {
   var take = parseInt(req.params.take) || 5;
   
 
-  data= data.sort (function(a,b ){ 
+  var returnData= data.sort (function(a,b ){ 
   	return a[sortBy] <  b[sortBy] ? -1 : 1;
   });
 
   var count = data.length;
-  var returnData= data.slice(skip, skip + take);
+  returnData= data.slice(skip, skip + take);
 
   return bogart.json({sort:sortBy, pageSize:take, start:skip+1, end: skip + returnData.length, count:count, results:returnData}); 
 });
