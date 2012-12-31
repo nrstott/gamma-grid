@@ -3,123 +3,19 @@
 <head>
   <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js" type="text/javascript" ></script>
   <script src="js/dotnetfx.js" type="text/javascript"></script>
+  <script src="js/gammaGrid.js" type="text/javascript"></script>
   <link href="css/gammaGrid.css" rel="stylesheet" type="text/css" />
-  <style>
-
-  </style>
 </head>
 <body>
-
   <script>
-    (function( $ ) {
-      $.fn.gammaGrid = function(options) {
-           var grid = this;
-       //init data 
-       var dataUrl = options.baseUrl;
-       var query = window.location.query;
-       var dataFormatters = options.dataFormatters || {};
-       var columns = options.columns;
-       var dataHash = {};
-
-       var context = {};
-       context.load = function(){
-         grid.html(""); //wipe the grid.
-          $.ajax(dataUrl, {data:query, method:"GET", dataType:"json", cache:false, success:function(data){
-         var isHeader = true;
-         var tbl = $("<table class='gammaGridTable' />");
-         for (var i = 0; i< data.length; i++){
-           //todo add dataformatters           
-           if (data[i].id){
-             dataHash[data[i].id] = data[i];
-           }
-           var alternate;
-           if (i %2  == 0) { alternate = "even";} else{ alternate = "odd"};
-           var tr = $("<tr class='gammaGridRow " + alternate + "' />");
-           var obj = data[i];
-           columns = columns || obj; //if no columns are set then assume them all.
-           if (isHeader){
-            for (var key in columns){
-              if (key == "id"){ 
-                var headerRow =  $("<th class='gammaGridColumnHeader'></th>");
-                var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
-                selectAll.click(function(){
-                  $(".gammaId").prop("checked", this.checked);
-                  if (this.checked){
-                    $("tr.gammaGridRow", tbl).addClass("selected");
-                  }else{
-                    $("tr.gammaGridRow", tbl).removeClass("selected");
-                  }                  
-                })
-                headerRow.append(selectAll);
-                tr.append(headerRow);
-              }else{
-                key = columns[key].title || key;
-                var th = $("<th class='gammaGridColumnHeader' >" + key + "</th>");
-                 tr.append(th);
-              }
-             }
-             isHeader = false;
-             tbl.append(tr);
-             tr = $("<tr class='gammaGridRow' />");
-           }
-          for (var key in columns){
-            var td;
-            if (key == "id"){
-                var chkbox = $("<input type='checkbox' class='gammaId' value='" +obj[key]+ "' />");
-                chkbox.click(function(){
-                  var selectedBox = $(this);
-                  if (selectedBox.attr('checked')){
-                    selectedBox.parent().parent().addClass("selected");  
-                  }else{
-                    selectedBox.parent().parent().removeClass("selected");  
-                  }
-                  
-                });
-              td = $("<td class='gammaGridColumnData' ></td>"); 
-              td.append(chkbox);
-            }else{
-               var formattedData = dataFormatters[key] ? dataFormatters[key](obj[key]) : obj[key];
-               td = $("<td class='gammaGridColumnData' >" + formattedData + "</td>");  
-            }
-             tr.append(td);
-           }
-           tbl.append(tr);
-         }
-         grid.append(tbl); 
-
-       var actionCollection = $("<div class='actionCollection' />");
-        for(var action in options.actions){
-         var btn = $("<input type='button' class='gammaId' value='" + action + "' />");
-         actionCollection.append(btn)
-         btn.click(function(){
-           var selectedObjects = [];
-           var ids = $(".gammaId:checked", grid).map(function(){ 
-             selectedObjects.push(dataHash[this.value]);
-             return this.value;             
-           });           
-           options.actions[action].call(context, ids, selectedObjects);
-         });
-         //todo add menu logic if there are nested keys 
-       }
-       grid.prepend(actionCollection);
-       }, error:function(err){
-         alert("An error occurred");
-       }})
-      };
-      context.load();
-      };
-    })( jQuery );
-
-
-
     $(function(){
       var dataFormatters = {createdAt:function(input){
         return parseIso(input).formatDate("MMMM d, yyyy");
       }};
       var columns = {
         id: {},
-        name : {title:"Name"},
-        createdAt: {title: "Created At"}
+        name : {title:"Name", sort:true},
+        createdAt: {title: "Created At", sort:true}
       }
       $("#grid").gammaGrid(
         {
@@ -141,11 +37,7 @@
     })    
   </script>
 
-
   <div id="grid">
-
   </div>
-
-  </body>
-
-  </html>
+</body>
+</html>
