@@ -17,6 +17,10 @@
     color:#fff;
     padding:5px;
 }
+.gammaPager a{
+  color:#fff;   
+  padding: 17px;
+}
 .gammaGridTable th{
     background-color:#000;
     color:#fff;
@@ -98,6 +102,9 @@ input[type="checkbox"]:hover{
         rgb(105,105,105) 70%
         );
     text-shadow:1px 1px 1px #000;
+}
+.gammaGrid{
+	font-family: Arial;
 }
 
 .actionCollection{

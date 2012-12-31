@@ -32,18 +32,18 @@ router.get('/css/*' , function(req){
 
 router.get('/api/users', function(req) { 
   var sortBy = req.params.sort || "name";
-  var skip = req.params.skip || 0;
-  var take = req.params.take || 5;
+  var skip = parseInt(req.params.skip) || 0;
+  var take = parseInt(req.params.take) || 5;
   
 
-  data  = data.sort (function(a,b ){ 
-  	return a[sortBy] > b[sortBy];
+  data= data.sort (function(a,b ){ 
+  	return a[sortBy] <  b[sortBy] ? -1 : 1;
   });
 
   var count = data.length;
-  data = data.slice(skip, skip + take);
+  var returnData= data.slice(skip, skip + take);
 
-  return bogart.json({sort:sortBy, results:data, start:skip+1, end: take, count:count}); 
+  return bogart.json({sort:sortBy, pageSize:take, start:skip+1, end: skip + returnData.length, count:count, results:returnData}); 
 });
 
 var app = bogart.app();

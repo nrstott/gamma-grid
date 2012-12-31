@@ -2,11 +2,38 @@
 
 
   $.fn.gammaGrid = function(options) {
-       var grid = this;
+
+    function hashToQuery(hash){
+      var query = "";
+      for(var key in hash){
+        if (key){
+          query += encodeURIComponent(key) + "=" + encodeURIComponent(hash[key]) + "&";  
+        }
+      }
+      return "?" + query;
+    }
+    function queryToHash(query){
+      query = query.substring(1);
+      var hash = {};
+      var pairs = query.split("&");
+      for(var i=0; i< pairs.length; i++){
+        var pair = pairs[i].split("=");
+        hash[pair[0]] = pair[1];
+      }
+      return hash;
+    }
+   var grid = this;
+   $(grid).addClass("gammaGrid");
    //init data 
    var dataUrl = options.baseUrl;
-   var pager = options.pager || function(start, end, count ){
-    return "<div class='gammaPager'>Showing " + start + " to " + end + " of " + count +"<div>";
+   var pager = options.pager || function(start, end, count, queryHash ){
+    queryHash.skip = end;
+    queryHash.take = options.pageSize;
+    var next = (end < count) ? "<a href='" + hashToQuery(queryHash) +"'>Next&nbsp;&mdash;&gt;</a>" : "";
+    queryHash.skip = start - options.pageSize -1 ;     
+    queryHash.skip = queryHash.skip < 0   ? 0 : queryHash.skip;
+    var prev = start !==1    ? "<a href='" + hashToQuery(queryHash)+ "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+    return "<div class='gammaPager'>" + prev + " Showing " + start + " to " + end + " of " + count + next + "<div>";
    };
    var query = window.location.search;
    var dataFormatters = options.dataFormatters || {};
@@ -15,6 +42,8 @@
 
    var context = {};
    context.load = function(query){
+     var queryHash = queryToHash(query);
+
      grid.html(""); //wipe the grid.
      $.ajax(dataUrl + query , {method:"GET", dataType:"json", cache:false, success:function(result){
      var data = result.results;
@@ -51,7 +80,11 @@
             if (shouldSort){
               titleContents = $("<a class='gammaSort' href='?sort=" + encodeURIComponent(key) + "'>" + titleContents + "</a>"); 
               titleContents.click(function(){
-                context.load(this.href.substring(this.href.lastIndexOf("/") + 1));
+                var tmpQuery = this.href.substring(this.href.lastIndexOf("/") + 1);
+                queryHash = queryToHash(tmpQuery);
+                queryHash.skip = 0;
+                queryHash.take = options.pageSize;
+                context.load(tmpQuery);
                 return false;
               })             
             }
@@ -95,7 +128,7 @@
        tbl.append(tr);
      }
      grid.append(tbl);
-     grid.append(pager(result.start, result.end, result.count)) 
+     grid.append(pager(result.start, result.end, result.count, queryHash)) 
 
    var actionCollection = $("<div class='actionCollection' />");
     for(var action in options.actions){
