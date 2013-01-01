@@ -136,7 +136,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           td = $("<td class='gammaGridColumnData' ></td>"); 
           td.append(chkbox);
         }else{
-           var formattedData = dataFormatters[key] ? dataFormatters[key](obj[key]) : obj[key];
+           var formattedData = dataFormatters[key] ? dataFormatters[key](obj[key], obj) : obj[key];
            td = $("<td class='gammaGridColumnData' >" + formattedData + "</td>");  
         }
          if (key == result.sort){
