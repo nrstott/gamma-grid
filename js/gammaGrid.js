@@ -59,6 +59,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
    var context = {};
    context.load = function(query){
+     query = query || window.location.search;
      var queryHash = queryToHash(query);
 
      grid.html(""); //wipe the grid.
