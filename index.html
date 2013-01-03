@@ -26,11 +26,23 @@
           search:true,
           actions:{
             "add" : function(){
-              alert("adding");
+              console.log("adding");
             }, 
-            "delete": function(ids, objs){
-              alert(ids);
-              this.load();
+            "delete": function(ids, objs) {
+              var self = this;
+              $.ajax({
+                url: "/api/users",
+                type: "post",               
+                data: {
+                  ids: Array.prototype.join.call(ids, ",")
+                },
+                success: function() {
+                  self.load();
+                },
+                error: function() {
+                  console.log("error!");
+                }
+              });             
             }
           }
         }

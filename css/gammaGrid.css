@@ -136,3 +136,8 @@ tr.gammaGridRow:hover{
         );
  text-shadow: none;
 }
+
+.globalText, .globalTrigger {
+    
+    margin-left:10px;
+}

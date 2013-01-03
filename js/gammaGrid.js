@@ -82,15 +82,52 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           if (key == "id"){ 
             var headerRow =  $("<th class='gammaGridColumnHeader'></th>");
             var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
-            selectAll.click(function(){
-              $(".gammaId").prop("checked", this.checked);
+
+            var globalSelectAll = $("<input type='hidden' value='false' id='globalSelectAll'/>");
+            var globalSelectSpan = $("<span class='globalText'>All items on this page are selected. </span>").hide();
+            var globalSelectTrigger = $("<a class='globalTrigger' href='javascript:void(0)'>Select items globally.</a>").hide();
+            
+
+            globalSelectTrigger.click(function(e) {
+              e.preventDefault();
+              
+              if(globalSelectAll.val() === "true") {
+                globalSelectAll.val("false");
+                globalSelectSpan.hide();
+                globalSelectTrigger.hide();
+                globalSelectSpan.text("All items on this page are selected. ");
+                globalSelectTrigger.text("Select items globally.");
+
+                $(".gammaId, .gammaSelectAll").prop("checked", false);
+              } else {                
+                globalSelectAll.val("true");
+                globalSelectSpan.text("All items are globally selected. ");
+                globalSelectTrigger.text("Clear selection.");
+              }
+
+            });
+
+            selectAll.change(function(){
+              var self = $(this);
+              $(".gammaId").prop("checked", self.prop("checked"));
               if (this.checked){
                 $("tr.gammaGridRow", tbl).addClass("selected");
               }else{
-                $("tr.gammaGridRow", tbl).removeClass("selected");
+                $("tr.gammaGridRow", tbl).removeClass("selected");                
               }                  
-            })
-            headerRow.append(selectAll);            
+              
+              if(this.checked) {                
+                globalSelectSpan.show();
+                globalSelectTrigger.show();
+              } else if(globalSelectAll.val() === "false") {
+                globalSelectTrigger.hide();
+                globalSelectSpan.hide();
+              }
+            });
+
+
+
+            headerRow.append(selectAll).append(globalSelectSpan).append(globalSelectTrigger).append(globalSelectAll);            
             tr.append(headerRow);
           }else{
             var shouldSort = columns[key].sort ? columns[key].sort : false;
@@ -150,20 +187,24 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
      grid.append(tbl);
      grid.append(pager(result.start, result.end, result.count, queryHash)) 
 
-   var actionCollection = $("<div class='actionCollection' />");
-    for(var action in options.actions){
-     var btn = $("<input type='button' class='gammaId' value='" + action + "' />");
-     actionCollection.append(btn)
-     btn.click(function(){
-       var selectedObjects = [];
-       var ids = $(".gammaId:checked", grid).map(function(){ 
-         selectedObjects.push(dataHash[this.value]);
-         return this.value;             
-       });           
-       options.actions[action].call(context, ids, selectedObjects);
-     });
-     //todo add menu logic if there are nested keys 
-   }
+    var actionCollection = $("<div class='actionCollection' />");
+    var globalSelectAll = $("#globalSelectAll");
+
+    $.each(options.actions, function(label, action) {
+      var btn = $("<input type='button' class='gammaId' value='" + label + "' />");
+      actionCollection.append(btn)
+      btn.click(function() {
+
+        var selectedObjects = [];
+        var ids = globalSelectAll.val() === "true" ? "*" : $(".gammaId:checked", grid).map(function() {
+          selectedObjects.push(dataHash[this.value]);
+          return this.value;
+        });
+        action.call(context, ids, selectedObjects);
+      });
+      //todo add menu logic if there are nested keys 
+    });
+
    grid.prepend(actionCollection);
    }, error:function(err){
      alert("An error occurred");

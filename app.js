@@ -18,7 +18,7 @@ var data = [
 
 router.get("/", function(req){
 	return bogart.file(path.join(__dirname, "index.html"));
-})
+});
 
 router.get('/js/*', function(req) {
   var filePath = path.join(__dirname, 'js', req.params.splat[0]);
@@ -28,13 +28,12 @@ router.get('/js/*', function(req) {
 router.get('/css/*' , function(req){
   var filePath = path.join(__dirname, 'css', req.params.splat[0]);
   return bogart.file(filePath);
-})
+});
 
 router.get('/api/users', function(req) { 
   var sortBy = req.params.sort || "name";
   var skip = parseInt(req.params.skip) || 0;
-  var take = parseInt(req.params.take) || 5;
-  
+  var take = parseInt(req.params.take) || 5;  
 
   var returnData= data.sort (function(a,b ){ 
   	return a[sortBy] <  b[sortBy] ? -1 : 1;
@@ -44,6 +43,21 @@ router.get('/api/users', function(req) {
   returnData= data.slice(skip, skip + take);
 
   return bogart.json({sort:sortBy, pageSize:take, start:skip+1, end: skip + returnData.length, count:count, results:returnData}); 
+});
+
+router.post("/api/users", function(req) {
+	var ids = (req.params.ids || "").split(",");	
+	if(ids.length === 1 && ids[0] === "*") {
+		data = [];
+	} else {
+		ids.forEach(function(id) {
+			data = data.filter(function(a) {
+				return a.id !== parseInt(id, 10);
+			})
+		});
+	}
+
+	return bogart.json({status:"ok"});
 });
 
 var app = bogart.app();
