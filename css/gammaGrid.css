@@ -39,7 +39,7 @@
     text-align: left;
     padding: 5px;
 }
-.gammaGridTable tr td.currentSort{
+.gammaSelectAllRow th, .gammaGridTable tr td.currentSort{
    border-right: 1px dashed black;
    border-left: 1px dashed black;
 
@@ -85,7 +85,7 @@ input[type="checkbox"]:hover{
 }
 
 
-.gammaGridTable tr.selected{
+.gammaSelectAllRow, .gammaGridTable tr.selected{
     background-color:#555;
     color:#f0f0f0;
     border-bottom:1px solid #444;
