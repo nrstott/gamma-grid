@@ -19,7 +19,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 (function( $ ) {
   $.fn.gammaGrid = function(options) {
-
+    if (!Object.keys) {
+        Object.keys = function (obj) {
+            var keys = [],
+                k;
+            for (k in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, k)) {
+                    keys.push(k);
+                }
+            }
+            return keys;
+        };
+    }
     function hashToQuery(hash){
       var query = "";
       for(var key in hash){
@@ -40,6 +51,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
       return hash;
     }
    var grid = this;
+   var context = {};
    $(grid).addClass("gammaGrid");
    //init data 
    var dataUrl = options.baseUrl;
@@ -49,22 +61,26 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
     var next = (end < count) ? "<a href='" + hashToQuery(queryHash) +"'>Next&nbsp;&mdash;&gt;</a>" : "";
     queryHash.skip = start - options.pageSize -1 ;     
     queryHash.skip = queryHash.skip < 0   ? 0 : queryHash.skip;
-    var prev = start !==1    ? "<a href='" + hashToQuery(queryHash)+ "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+    var prev = start !==1    ? "<a href='" + hashToQuery(queryHash)+ "'>&lt;&mdash;&nbsp;Previous </a>" : "";    
     return "<div class='gammaPager'>" + prev + " Showing " + start + " to " + end + " of " + count + next + "</div>";
    };
    var query = window.location.search;
    var dataFormatters = options.dataFormatters || {};
    var columns = options.columns;
-   var dataHash = {};
+   var dataHash = {};   
 
-   var context = {};
+   
    context.load = function(query){
      query = query || window.location.search;
      var queryHash = queryToHash(query);
 
      grid.html(""); //wipe the grid.
-     $.ajax(dataUrl + query , {method:"GET", dataType:"json", cache:false, success:function(result){
+     $.ajax(dataUrl + query , {method:"GET", dataType:"json", cache:false, success:function(result){     
      var data = result.results;
+     context.count = result.count;
+     context.start = result.start;
+     context.end = result.end;
+
      var isHeader = true;
      var tbl = $("<table class='gammaGridTable' />");
      for (var i = 0; i< data.length; i++){
@@ -84,32 +100,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
             var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
 
             var globalSelectAll = $("<input type='hidden' value='false' id='globalSelectAll'/>");
-            var globalSelectSpan = $("<span class='globalText'>All items on this page are selected. </span>").hide();
-            var globalSelectTrigger = $("<a class='globalTrigger' href='javascript:void(0)'>Select items globally.</a>").hide();
+            var globalSelectSpan = $("<span class='globalText'>All items on this page are selected. </span>");
+            var globalSelectTrigger = $("<a class='globalTrigger' href='javascript:void(0)'>Select all "+context.count+" items.</a>");
             
 
             globalSelectTrigger.click(function(e) {
               e.preventDefault();
               
               if(globalSelectAll.val() === "true") {
-                globalSelectAll.val("false");
-                globalSelectSpan.hide();
-                globalSelectTrigger.hide();
-                globalSelectSpan.text("All items on this page are selected. ");
-                globalSelectTrigger.text("Select items globally.");
-
-                $(".gammaId, .gammaSelectAll").prop("checked", false);
+                context.load();
               } else {                
                 globalSelectAll.val("true");
-                globalSelectSpan.text("All items are globally selected. ");
-                globalSelectTrigger.text("Clear selection.");
+                $(".gammaId").attr("disabled", "disabled");
+                $(".gammaPager a").hide();
+                globalSelectSpan.text("All " + context.count + " items are selected. ");
+                globalSelectTrigger.text("");
               }
 
             });
+            var selectAllHeader = $("<th class='gammaSelectAll' colspan='" + Object.keys(columns).length +"'/>").append(selectAll).append(globalSelectSpan).append(globalSelectTrigger).append(globalSelectAll);
+            var selectAllRow = $("<tr class='gammaSelectAllRow'/>").append(selectAllHeader);
+            selectAllRow.hide();
+            thead.append(selectAllRow);
 
             selectAll.change(function(){
               var self = $(this);
-              $(".gammaId").prop("checked", self.prop("checked"));
+              var checkedItems = $(".gammaId");
+              checkedItems.prop("checked", self.prop("checked"));
               if (this.checked){
                 $("tr.gammaGridRow", tbl).addClass("selected");
               }else{
@@ -117,17 +134,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
               }                  
               
               if(this.checked) {                
-                globalSelectSpan.show();
-                globalSelectTrigger.show();
-              } else if(globalSelectAll.val() === "false") {
-                globalSelectTrigger.hide();
-                globalSelectSpan.hide();
+                globalSelectSpan.text(checkedItems.length + " items on this page are selected.");
+                selectAllRow.show();
+              } else {
+                selectAllRow.hide();
+                globalSelectAll.val("false");
+                checkedItems.removeAttr("disabled");
+                $(".gammaPager a").show();
               }
             });
-
-
-
-            headerRow.append(selectAll).append(globalSelectSpan).append(globalSelectTrigger).append(globalSelectAll);            
+            headerRow.append(selectAll);
             tr.append(headerRow);
           }else{
             var shouldSort = columns[key].sort ? columns[key].sort : false;
@@ -191,7 +207,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
     var globalSelectAll = $("#globalSelectAll");
 
     $.each(options.actions, function(label, action) {
-      var btn = $("<input type='button' class='gammaId' value='" + label + "' />");
+      var btn = $("<input type='button' value='" + label + "' />");
       actionCollection.append(btn)
       btn.click(function() {
 

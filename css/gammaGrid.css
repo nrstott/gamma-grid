@@ -12,6 +12,9 @@
 .gammaGridTable th a:hover{
     color:#eee;
 }
+.gammaSelectAll{
+    text-align: center !important;
+}
 .gammaPager{
 }
 .gammaPager a{
