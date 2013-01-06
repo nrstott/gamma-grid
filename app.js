@@ -20,13 +20,8 @@ router.get("/", function(req){
 	return bogart.file(path.join(__dirname, "index.html"));
 });
 
-router.get('/js/*', function(req) {
-  var filePath = path.join(__dirname, 'js', req.params.splat[0]);
-  return bogart.file(filePath);
-});
-
-router.get('/css/*' , function(req){
-  var filePath = path.join(__dirname, 'css', req.params.splat[0]);
+router.get('/public/*' , function(req){
+  var filePath = path.join(__dirname, 'public', req.params.splat[0]);
   return bogart.file(filePath);
 });
 
