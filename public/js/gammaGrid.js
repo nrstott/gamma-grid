@@ -77,11 +77,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
      //ajax loading
      var loadingDiv = $("<div class='loading' />");
-     $(body).append(loadingDiv);
-     loadingDiv.show();
+     grid.html("")
+     grid.append(loadingDiv);     
      $.ajax(dataUrl + query , {method:"GET", dataType:"json", cache:false, success:function(result){     
-      
-     
      grid.html(""); 
      var data = result.results;
      context.count = result.count;
