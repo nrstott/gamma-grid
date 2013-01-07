@@ -51,7 +51,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
       return hash;
     }
    var grid = this;
-   var context = {};
+   var context = {};   
    var body = $("body");
    grid.addClass("gammaGrid");
    //init data 
@@ -227,6 +227,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
     });
 
    grid.prepend(actionCollection);
+      if (options.afterload){
+        options.afterload.call(context);
+      }
    }, error:function(err){
      alert("An error occurred");
    }})

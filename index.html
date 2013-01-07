@@ -24,6 +24,7 @@
           columns:columns,
           pageSize:5,
           search:true,
+          afterload: function(){ console.log("after data load");},
           actions:{
             "add" : function(){
               console.log("adding");
