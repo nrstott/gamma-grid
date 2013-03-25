@@ -157,7 +157,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
             if (shouldSort){
               titleContents = $("<a class='gammaSort' href='?sort=" + encodeURIComponent(key) + "'>" + titleContents + "</a>"); 
               titleContents.click(function(){
-                var tmpQuery = this.href.substring(this.href.lastIndexOf("/") + 1);
+                var tmpQuery = this.href.substring(this.href.lastIndexOf("?"));
                 queryHash = queryToHash(tmpQuery);
                 queryHash.skip = 0;
                 queryHash.take = options.pageSize;
