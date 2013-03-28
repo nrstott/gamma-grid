@@ -151,9 +151,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
             headerRow.append(selectAll);
             tr.append(headerRow);
           }else{
-            var shouldSort = columns[key].sort ? columns[key].sort : false;
-            shouldSort &= result.sort !== key;            
-            var titleContents = columns[key].title || key;
+          	
+            var shouldSort = (columns[key] == null) ? false : columns[key].sort ? columns[key].sort : false;
+            if (shouldSort!==false){
+            	shouldSort &= result.sort !== key;
+				}                        
+            var titleContents = columns[key] === null ? key : columns[key].title || key;
             if (shouldSort){
               titleContents = $("<a class='gammaSort' href='?sort=" + encodeURIComponent(key) + "'>" + titleContents + "</a>"); 
               titleContents.click(function(){
