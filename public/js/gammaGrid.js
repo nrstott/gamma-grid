@@ -58,7 +58,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
    var dataUrl = options.baseUrl;
    var pager = options.pager || function(start, end, count, queryHash ){
     queryHash.skip = end;
-    queryHash.take = options.pageSize;
     var next = (end < count) ? "<a href='" + hashToQuery(queryHash) +"'>Next&nbsp;&mdash;&gt;</a>" : "";
     queryHash.skip = start - options.pageSize -1 ;     
     queryHash.skip = queryHash.skip < 0   ? 0 : queryHash.skip;
