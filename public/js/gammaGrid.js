@@ -86,7 +86,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
      context.end = result.end;
 
      if (options.search){
-        grid.html("<form class='gammaSearch'><input type='text' name='search' /></form>");
+        grid.html("<form class='gammaSearch'><input type='text' name='search' placeholder='Search' /></form>");
      }  
 
      var isHeader = true;
