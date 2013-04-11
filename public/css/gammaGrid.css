@@ -113,7 +113,7 @@ input[type="checkbox"]:hover{
 }
 
 .actionCollection{
-    
+    float:left;
 }
 .actionCollection input{
   color:#fff;
@@ -149,6 +149,9 @@ tr.gammaGridRow:hover{
     margin-left:10px;
 }
 .gammaGridTable tbody.loading{
+}
+.gammaSearch{
+    float:right;
 }
 div.loading{
     height: 900px;

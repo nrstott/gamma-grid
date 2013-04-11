@@ -85,6 +85,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
      context.start = result.start;
      context.end = result.end;
 
+     if (options.search){
+        grid.html("<form class='gammaSearch'><input type='text' name='search' /></form>");
+     }  
+
      var isHeader = true;
      var tbl = $("<table class='gammaGridTable' />");
      for (var i = 0; i< data.length; i++){
