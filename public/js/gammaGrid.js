@@ -18,7 +18,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 (function( $ ) {
-  $.fn.gammaGrid = function(options) {
+  $.fn.gammaGrid = function(options, cb) {
     if (!Object.keys) {
         Object.keys = function (obj) {
             var keys = [],
@@ -233,8 +233,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
     });
 
    grid.prepend(actionCollection);
-      if (options.afterload){
-        options.afterload.call(context);
+      if (options.afterLoad){
+        options.afterLoad.call(context);
       }
    }, error:function(err){
      alert("An error occurred");
