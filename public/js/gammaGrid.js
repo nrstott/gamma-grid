@@ -239,11 +239,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
         options.afterLoad.call(context);
       }
    }, error:function(err){
-     alert("An error occurred");
+     console.log("An error occurred with gammaGrid");
    }})
   }; //end of content.load
   context.load(query);
   }; //end of gamma grid
+                        
 })( jQuery );
 
 
