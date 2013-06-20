@@ -239,7 +239,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
         options.afterLoad.call(context);
       }
    }, error:function(err){
-     console.log("An error occurred with gammaGrid");
+		console.error("An error occurred during api call", err)
    }})
   }; //end of content.load
   context.load(query);
