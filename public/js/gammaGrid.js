@@ -217,6 +217,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
      grid.append(tbl);
      grid.append(pager(result.start, result.end, result.count, queryHash)) 
 
+    if (options.onItemClick) {
+      $(document).on("click", ".gammaGridRow", function() {
+        var id = $(this).find('.gammaId').val();
+        var obj = dataHash[id];
+        options.onItemClick(id, obj);
+      });
+    }
+
     var actionCollection = $("<div class='actionCollection' />");
     var globalSelectAll = $("#globalSelectAll");
 
