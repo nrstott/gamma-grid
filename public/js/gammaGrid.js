@@ -62,7 +62,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
     queryHash.skip = start - options.pageSize -1 ;     
     queryHash.skip = queryHash.skip < 0   ? 0 : queryHash.skip;
     var prev = start !==1    ? "<a href='" + hashToQuery(queryHash)+ "'>&lt;&mdash;&nbsp;Previous </a>" : "";    
-    if (count == 0) {
+    if (end == 0) {
       return "<div class='gammaPager'>No Results</div>";
     }
     else {
