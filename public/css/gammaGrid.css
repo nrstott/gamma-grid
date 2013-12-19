@@ -144,7 +144,9 @@ tr.gammaGridRow:hover{
         );
  text-shadow: none;
 }
-
+tbody tr.gammaGridRow:hover {
+ cursor: pointer;
+}
 .globalText, .globalTrigger {
     margin-left:10px;
 }
