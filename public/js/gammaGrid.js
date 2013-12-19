@@ -62,7 +62,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
     queryHash.skip = start - options.pageSize -1 ;     
     queryHash.skip = queryHash.skip < 0   ? 0 : queryHash.skip;
     var prev = start !==1    ? "<a href='" + hashToQuery(queryHash)+ "'>&lt;&mdash;&nbsp;Previous </a>" : "";    
-    return "<div class='gammaPager'>" + prev + " Showing " + start + " to " + end + " of " + count + next + "</div>";
+    if (count == 0) {
+      return "<div class='gammaPager'>No Results</div>";
+    }
+    else {
+      return "<div class='gammaPager'>" + prev + " Showing " + start + " to " + end + " of " + count + next + "</div>";
+    }
    };
    var query = window.location.search;
    var dataFormatters = options.dataFormatters || {};
