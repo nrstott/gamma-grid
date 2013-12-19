@@ -202,6 +202,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           td.append(chkbox);
         }else{
            var formattedData = dataFormatters[key] ? dataFormatters[key](obj[key], obj) : obj[key];
+           if (!formattedData) {
+            formattedData = '';
+           }
            td = $("<td class='gammaGridColumnData' >" + formattedData + "</td>");  
         }
          if (key == result.sort){
