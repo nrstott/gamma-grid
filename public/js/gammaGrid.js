@@ -219,9 +219,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
     if (options.onItemClick) {
       $(document).on("click", "tbody tr.gammaGridRow", function() {
-        var id = $(this).find('.gammaId').val();
-        var obj = dataHash[id];
-        options.onItemClick(id, obj);
+        if (e.target.className != "gammaId") {
+          var id = $(this).find('.gammaId').val();
+          var obj = dataHash[id];
+          options.onItemClick(id, obj);
+        }
       });
     }
 
