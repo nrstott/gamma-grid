@@ -155,6 +155,15 @@ tbody tr.gammaGridRow:hover {
 .gammaSearch{
     float:right;
 }
+.gammaSearch .gammaSearchField {
+    padding-right: 20px;
+}
+.gammaSearch .clearText {
+    cursor: pointer;
+    position: relative;
+    right: 15px;
+}
+
 div.loading{
     height: 900px;
     width:100%;

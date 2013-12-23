@@ -91,7 +91,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
      context.end = result.end;
 
      if (options.search){
-        grid.html("<form class='gammaSearch'><input type='text' name='search' placeholder='Search...' class='gammaSearchField'/></form>");
+        var searchValue = "";
+        if (queryHash['search']) {
+          searchValue = " value=" + queryHash['search'];
+        }
+        $(document).on('click', '.gammaSearch .clearText', function () {
+            $(this).parent().find('input').val('');
+        });
+        grid.html("<form class='gammaSearch'><input type='text' name='search'" + searchValue + " placeholder='Search...' class='gammaSearchField'/><span class='clearText'>x</span></form>");
      }  
 
      var isHeader = true;
