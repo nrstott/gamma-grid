@@ -230,7 +230,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
      grid.append(pager(result.start, result.end, result.count, queryHash)) 
 
     if (options.onItemClick) {
-      $(document).on("click", "tbody tr.gammaGridRow", function() {
+      $(document).on("click", "tbody tr.gammaGridRow", function(e) {
         if (e.target.className != "gammaId") {
           var id = $(this).find('.gammaId').val();
           var obj = dataHash[id];
