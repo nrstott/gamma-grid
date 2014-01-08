@@ -217,7 +217,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
            if (!formattedData) {
             formattedData = '';
            }
-           td = $("<td class='gammaGridColumnData' >" + formattedData + "</td>");  
+           if (columns[key].isLink) {
+            var href = columns[key].href;
+            href.match(/{{\s*[\w\.]+\s*}}/g).map(function (str) {
+              var field = str.substring(2, str.length - 2);
+              var value = obj[field];
+              href = href.replace(str, value);
+            });
+            td = $("<td class='gammaGridColumnData' ><a href='" + href + "'>" + formattedData + "</a></td>");
+           }
+           else {
+            td = $("<td class='gammaGridColumnData' >" + formattedData + "</td>");
+           } 
         }
          if (key == result.sort){
           td.addClass("currentSort");                 

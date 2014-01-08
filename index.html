@@ -14,7 +14,7 @@
       }};
       var columns = {
         id: {},
-        name : {title:"Name", sort:true},
+        name : {title:"Name", sort:true, isLink: true, href: '/name/{{id}}' },
         createdAt: {title: "Created At", sort:true}
       }
       $("#grid").gammaGrid(
