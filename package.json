@@ -1,6 +1,6 @@
 {
   "name": "GammaGrid",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "directories": { "lib": "./src" },
   "main": "./lib/app.js",
   "author": "Whiteboard-IT",
