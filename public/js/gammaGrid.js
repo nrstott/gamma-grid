@@ -227,6 +227,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
             td = $("<td class='gammaGridColumnData' ><a href='" + href + "'>" + formattedData + "</a></td>");
            }
            else {
+            if (columns[key].template) {
+              var template = columns[key].template;
+              template.match(/{{\s*[\w\.]+\s*}}/g).map(function (str) {
+                var field = str.substring(2, str.length - 2);
+                var value = obj[field];
+                template = template.replace(str, value);
+              });
+              formattedData = template;
+            }
             td = $("<td class='gammaGridColumnData' >" + formattedData + "</td>");
            } 
         }

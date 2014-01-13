@@ -15,6 +15,7 @@
       var columns = {
         id: {},
         name : {title:"Name", sort:true, isLink: true, href: '/name/{{id}}' },
+        position: {title:"Position", template:'<a href="/employee/{{id}}">{{position}}</a> (<a href="/position/{{position}}">Position Details</a>)'},
         createdAt: {title: "Created At", sort:true}
       }
       $("#grid").gammaGrid(

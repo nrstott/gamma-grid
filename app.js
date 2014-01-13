@@ -3,17 +3,17 @@ var path = require("path");
 var router = bogart.router();
 
 var data = [
-	{id:1, name:"Martin", createdAt: new Date()}, 
-	{id:2, name:"Susan", createdAt: new Date("2010-05-01")}, 
-	{id:3, name:"Michael", createdAt:new Date("1981-10-16")},
-	{id:4, name:"John", createdAt: new Date()}, 
-	{id:5, name:"Davis", createdAt: new Date("2010-05-01")}, 
-	{id:6, name:"Zach", createdAt: new Date()}, 
-	{id:7, name:"Valerie", createdAt: new Date("2010-05-01")}, 
-	{id:8, name:"Nathan", createdAt: new Date()}, 
-	{id:9, name:"Lewis", createdAt: new Date("2010-05-01")}, 
-	{id:10, name:"Justin", createdAt: new Date()}, 
-	{id:11, name:"Daniel", createdAt: new Date("2010-05-01")}
+	{id:1, name:"Martin", position: "Employee", createdAt: new Date()}, 
+	{id:2, name:"Susan", position: "Employee", createdAt: new Date("2010-05-01")}, 
+	{id:3, name:"Michael", position: "Employee", createdAt:new Date("1981-10-16")},
+	{id:4, name:"John", position: "Employee", createdAt: new Date()}, 
+	{id:5, name:"Davis", position: "Employee", createdAt: new Date("2010-05-01")}, 
+	{id:6, name:"Zach", position: "Employee", createdAt: new Date()}, 
+	{id:7, name:"Valerie", position: "Employee", createdAt: new Date("2010-05-01")}, 
+	{id:8, name:"Nathan", position: "Employee", createdAt: new Date()}, 
+	{id:9, name:"Lewis", position: "Employee", createdAt: new Date("2010-05-01")}, 
+	{id:10, name:"Justin", position: "Employee", createdAt: new Date()}, 
+	{id:11, name:"Daniel", position: "Employee", createdAt: new Date("2010-05-01")}
 	];
 
 router.get("/", function(req){
