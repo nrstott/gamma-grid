@@ -1,13 +1,13 @@
 {
-    "name": "gamma-grid",
-    "version": "0.0.3",
-    "directories": {
-        "lib": "./src"
-    },
-    "main": "./lib/app.js",
-    "author": "Whiteboard-IT",
-    "dependencies": {
-        "bogart": ">=0.1.4",
-        "mustache": "~0.8.1"
-    }
+  "name": "gamma-grid",
+  "version": "0.0.3",
+  "directories": {
+    "lib": "./src"
+  },
+  "main": "./lib/app.js",
+  "author": "Whiteboard-IT",
+  "dependencies": {
+    "bogart": "~0.5.15",
+    "mustache": "~0.8.1"
+  }
 }
