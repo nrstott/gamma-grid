@@ -56,7 +56,7 @@ router.post("/api/users", function(req) {
 });
 
 var app = bogart.app();
-app.use(bogart.batteries); // A batteries included JSGI stack including streaming request body parsing, session, flash, and much more.
+app.use(bogart.batteries({secret:"ASDFLKJASDF"})); // A batteries included JSGI stack including streaming request body parsing, session, flash, and much more.
 app.use(router); // Our router
 
-app.start();
+app.start({port:1337});

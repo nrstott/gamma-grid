@@ -39,11 +39,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                       query += encodeURIComponent(key) + "=" + encodeURIComponent(hash[key]) + "&";
                   }
               }
-              return "?" + query;
+              if (query.lastIndexOf("&") == query.length-1){
+                query = query.substring(0, query.length);
+              }
+              return  query;
           }
 
           function queryToHash(query) {
-              query = query.substring(1);
+              if (query.indexOf("?") === 0){
+                query = query.substring(1);   
+              }
               var hash = {};
               var pairs = query.split("&");
               for (var i = 0; i < pairs.length; i++) {
@@ -60,10 +65,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           var dataUrl = options.baseUrl;
           var pager = options.pager || function(start, end, count, queryHash) {
                   queryHash.skip = end;
-                  var next = (end < count) ? "<a href='" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
+                  var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
                   queryHash.skip = start - options.pageSize - 1;
                   queryHash.skip = queryHash.skip < 0 ? 0 : queryHash.skip;
-                  var prev = start !== 1 ? "<a href='" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+                  var prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
                   if (end == 0) {
                       return "<div class='gammaPager'>No Results</div>";
                   } else {
@@ -78,13 +83,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
           context.load = function(query) {
               query = query || window.location.search;
+              query = query.replace("?", "");
               var queryHash = queryToHash(query);
 
               //ajax loading
               var loadingDiv = $("<div class='loading' />");
               grid.html("")
               grid.append(loadingDiv);
-              $.ajax(dataUrl + query, {
+              var url = dataUrl + (dataUrl.indexOf("?") > -1 ? "&" + query : "?" + query);
+              $.ajax(url, {
                   method: "GET",
                   dataType: "json",
                   cache: false,
