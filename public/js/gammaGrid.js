@@ -63,7 +63,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           grid.addClass("gammaGrid");
           //init data 
 
-          var dataUrl = options.baseUrl.substring(0,options.baseUrl.indexOf("?"));
+          var dataUrl = options.baseUrl.indexOf("?") > -1 ?  options.baseUrl.substring(0,options.baseUrl.indexOf("?")) : options.baseUrl;
           var pager = options.pager || function(start, end, count, queryHash) {
                   queryHash.skip = end;
                   var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
