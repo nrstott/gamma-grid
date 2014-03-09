@@ -109,6 +109,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                           }
                           $(document).on('click', '.gammaSearch .clearText', function() {
                               $(this).parent().find('input').val('');
+                              delete queryHash['search'];
+                              query = hashToQuery(queryHash);
+                              window.location.search = query;
+                              context.load(query);
                           });
                           grid.html("<form class='gammaSearch'><input type='text' name='search'" + searchValue + " placeholder='Search...' class='gammaSearchField'/><span class='clearText'>x</span></form>");
                       }

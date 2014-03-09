@@ -29,13 +29,21 @@ router.get('/api/users', function(req) {
   var sortBy = req.params.sort || "name";
   var skip = parseInt(req.params.skip) || 0;
   var take = parseInt(req.params.take) || 5;  
+  var search = req.params.search;
 
   var returnData= data.sort (function(a,b ){ 
   	return a[sortBy] <  b[sortBy] ? -1 : 1;
   });
 
-  var count = data.length;
-  returnData= data.slice(skip, skip + take);
+
+  if (search){
+  	returnData = returnData.filter(function(item){
+  	 	return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
+  	});	
+  }
+  
+  var count = returnData.length;
+  returnData= returnData.slice(skip, skip + take);
 
   return bogart.json({sort:sortBy, pageSize:take, start:skip+1, end: skip + returnData.length, count:count, results:returnData}); 
 });
