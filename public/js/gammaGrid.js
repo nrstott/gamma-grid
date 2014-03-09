@@ -62,7 +62,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           var body = $("body");
           grid.addClass("gammaGrid");
           //init data 
-          var dataUrl = options.baseUrl;
+
+          var dataUrl = options.baseUrl.substring(0,options.baseUrl.indexOf("?"));
           var pager = options.pager || function(start, end, count, queryHash) {
                   queryHash.skip = end;
                   var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
@@ -76,6 +77,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                   }
               };
           var query = window.location.search;
+
           var dataFormatters = options.dataFormatters || {};
           var columns = options.columns;
           var dataHash = {};
@@ -85,6 +87,18 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
               query = query || window.location.search;
               query = query.replace("?", "");
               var queryHash = queryToHash(query);
+
+              var initialOptions = options.baseUrl.substring(options.baseUrl.indexOf("?"));
+              if (initialOptions){
+                var originalOptions = queryToHash(initialOptions)
+                for(var key in originalOptions)
+                {
+                   if (!queryHash[key]){
+                    queryHash[key] = originalOptions[key];
+                   }
+                }
+              }
+              query = hashToQuery(queryHash);
 
               //ajax loading
               var loadingDiv = $("<div class='loading' />");
