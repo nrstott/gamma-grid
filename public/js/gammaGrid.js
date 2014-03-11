@@ -40,7 +40,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                   }
               }
               if (query.lastIndexOf("&") == query.length-1){
-                query = query.substring(0, query.length);
+                query = query.substring(0, query.length-1);
               }
               return  query;
           }
