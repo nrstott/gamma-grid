@@ -1,0 +1,27 @@
+{
+  "name": "gamma-grid",
+  "version": "0.1.0",
+  "authors": [
+    "Martin Murphy <martin.murphy@whiteboar-it.com>"
+  ],
+  "description": "Convention based client-side grid framework.",
+  "main": "dist/gamma-grid.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "grid",
+    "gammaGrid",
+    "mustache",
+    "table"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
