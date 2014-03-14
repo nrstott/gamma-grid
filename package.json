@@ -1,13 +1,18 @@
 {
   "name": "gamma-grid",
-  "version": "0.0.8",
-  "directories": {
-    "lib": "./src"
-  },
-  "main": "./lib/app.js",
+  "version": "0.1.0",
   "author": "Whiteboard-IT",
-  "dependencies": {
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "mustache": "~0.8.1",
     "bogart": ">=0.5.15",
-    "mustache": "~0.8.1"
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.7.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-qunit": "~0.3.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.7"
   }
 }
