@@ -148,7 +148,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                               var thead = $("<thead />");
                               for (var key in columns) {
                                   if (key == "id") {
-                                      var headerRow = $("<th class='gammaGridColumnHeader'></th>");
+                                      var headerRow = $("<th id='gammaGridHeader_"+key+"' class='gammaGridColumnHeader'></th>");
                                       var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
 
                                       var globalSelectAll = $("<input type='hidden' value='false' id='globalSelectAll'/>");
@@ -215,7 +215,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                                               return false;
                                           })
                                       }
-                                      var th = $("<th class='gammaGridColumnHeader' ></th>");
+                                      var th = $("<th id='gammaGridHeader_"+key+"' class='gammaGridColumnHeader' ></th>");
                                       if (key == result.sort) {
                                           th.addClass("currentSort");
                                       }
