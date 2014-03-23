@@ -53,7 +53,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
               var pairs = query.split("&");
               for (var i = 0; i < pairs.length; i++) {
                   var pair = pairs[i].split("=");
-                  hash[pair[0]] = pair[1];
+                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace("+", " ");
               }
               return hash;
           }
@@ -119,7 +119,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                       if (options.search) {
                           var searchValue = "";
                           if (queryHash['search']) {
-                              searchValue = " value=" + queryHash['search'];
+                              searchValue = " value='" + decodeURIComponent(queryHash['search']) + "'";
                           }
                           $(document).on('click', '.gammaSearch .clearText', function() {
                               $(this).parent().find('input').val('');
