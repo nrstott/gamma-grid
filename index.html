@@ -21,10 +21,11 @@
       }
       $("#grid").gammaGrid(
         {
-          baseUrl:"/api/users?someparam=8", 
+          baseUrl:"/api/users", 
           dataFormatters: dataFormatters,
           columns:columns,
           search:true,
+          pageSize:10,
           afterLoad: function(){ console.log("after data load");},
           actions:{
             "add" : function(){

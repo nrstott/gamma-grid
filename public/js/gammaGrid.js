@@ -87,8 +87,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
               query = query || window.location.search;
               query = query.replace("?", "");
               var queryHash = queryToHash(query);
-
-              var initialOptions = options.baseUrl.substring(options.baseUrl.indexOf("?"));
+              queryHash.take = options.pageSize;
+              var initialOptions = options.baseUrl.indexOf("?") > -1 ? options.baseUrl.substring(options.baseUrl.indexOf("?")): "";
               if (initialOptions){
                 var originalOptions = queryToHash(initialOptions)
                 for(var key in originalOptions)
