@@ -1,6 +1,10 @@
 {
   "name": "gamma-grid",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "directories": {
+    "lib": "./src"
+  },
+  "main": "./lib/app.js",
   "author": "Whiteboard-IT",
   "engines": {
     "node": ">= 0.10.0"
