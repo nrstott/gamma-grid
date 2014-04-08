@@ -4,55 +4,72 @@
   $.fn.gammaGrid = function(options, cb) {
     if (!Object.keys) {
       Object.keys = function(obj) {
-        var keys = [],
-        k;
+        var keys = []
+          , k;
+
         for (k in obj) {
           if (Object.prototype.hasOwnProperty.call(obj, k)) {
             keys.push(k);
           }
         }
+
         return keys;
       };
     }
 
     function hashToQuery(hash) {
       var query = "";
+      
       for (var key in hash) {
         if (key) {
           query += encodeURIComponent(key) + "=" + encodeURIComponent(hash[key]) + "&";
         }
       }
+
       if (query.lastIndexOf("&") == query.length-1){
         query = query.substring(0, query.length-1);
       }
+
       return  query;
     }
 
     function queryToHash(query) {
+      var hash, pairs;
+
       if (query.indexOf("?") === 0){
         query = query.substring(1);   
       }
-      var hash = {};
-      var pairs = query.split("&");
+
+      hash = {};
+      pairs = query.split("&");
+      
       for (var i = 0; i < pairs.length; i++) {
         var pair = pairs[i].split("=");
         hash[pair[0]] = pair[1];
       }
+
       return hash;
     }
+
     var grid = this;
     var context = {};
     var body = $("body");
+
     grid.addClass("gammaGrid");
     //init data 
 
     var dataUrl = options.baseUrl.indexOf("?") > -1 ?  options.baseUrl.substring(0,options.baseUrl.indexOf("?")) : options.baseUrl;
     var pager = options.pager || function(start, end, count, queryHash) {
+      var next, prev;
+
       queryHash.skip = end;
-      var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
+      next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
+      
       queryHash.skip = start - options.pageSize - 1;
       queryHash.skip = queryHash.skip < 0 ? 0 : queryHash.skip;
-      var prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+      
+      prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+      
       if (end == 0) {
           return "<div class='gammaPager'>No Results</div>";
       } else {
@@ -68,11 +85,13 @@
 
 
     context.load = function(query) {
+      var queryHash, initialOptions;
+
       query = query || window.location.search;
       query = query.replace("?", "");
-      var queryHash = queryToHash(query);
 
-      var initialOptions = options.baseUrl.substring(options.baseUrl.indexOf("?"));
+      queryHash = queryToHash(query);
+      initialOptions = options.baseUrl.substring(options.baseUrl.indexOf("?"));
       
       if (initialOptions) {
         var originalOptions = queryToHash(initialOptions)
@@ -92,48 +111,58 @@
       grid.html("")
       grid.append(loadingDiv);
       
-      
       $.ajax(url, {
         method: "GET",
         dataType: "json",
         cache: false,
         success: function(result) {
-          grid.html("");
           var data = result.results;
+          
+          grid.html("");
+
           context.count = result.count;
           context.start = result.start;
           context.end = result.end;
 
           if (options.search) {
             var searchValue = "";
+            
             if (queryHash['search']) {
               searchValue = " value=" + queryHash['search'];
             }
+
             $(document).on('click', '.gammaSearch .clearText', function() {
               $(this).parent().find('input').val('');
               delete queryHash['search'];
+
               query = hashToQuery(queryHash);
               window.location.search = query;
               context.load(query);
             });
+
             grid.html("<form class='gammaSearch'><input type='text' name='search'" + searchValue + " placeholder='Search...' class='gammaSearchField'/><span class='clearText'>x</span></form>");
           }
 
           var isHeader = true;
           var tbl = $("<table class='gammaGridTable' />");
           for (var i = 0; i < data.length; i++) {
-            if (data[i].id) {
-              dataHash[data[i].id] = data[i];
-            }
             var alternate = "odd";
+            
             if (i % 2 == 0) {
               alternate = "even";
             }
+            
+            if (data[i].id) {
+              dataHash[data[i].id] = data[i];
+            }
+
             var tr = $("<tr class='gammaGridRow " + alternate + "' />");
             var obj = data[i];
             columns = columns || obj; //if no columns are set then assume them all.
+
             if (isHeader) {
               var thead = $("<thead />");
+
               for (var key in columns) {
                 if (key == "id") {
                   var headerRow = $("<th class='gammaGridColumnHeader'></th>");
@@ -156,11 +185,11 @@
                       globalSelectSpan.text("All " + context.count + " items are selected. ");
                       globalSelectTrigger.text("");
                     }
-
                   });
 
                   var selectAllHeader = $("<th class='gammaSelectAll' colspan='" + Object.keys(columns).length + "'/>").append(selectAll).append(globalSelectSpan).append(globalSelectTrigger).append(globalSelectAll);
                   var selectAllRow = $("<tr class='gammaSelectAllRow'/>").append(selectAllHeader);
+                  
                   selectAllRow.hide();
                   thead.append(selectAllRow);
 
@@ -220,16 +249,20 @@
                   tr.append(th);
                 }
               }
+
               thead.append(tr);
               tbl.append(thead);
               isHeader = false;
+
               tr = $("<tr class='gammaGridRow' />");
             }
 
             for (var key in columns) {
               var td;
+
               if (key == "id") {
                 var chkbox = $("<input type='checkbox' class='gammaId' value='" + obj[key] + "' />");
+                
                 chkbox.click(function() {
                   var selectedBox = $(this);
                   
@@ -259,7 +292,9 @@
                   });
 
                   td = $("<td class='gammaGridColumnData' ><a href='" + href + "'>" + formattedData + "</a></td>");
+                
                 } else {
+
                   if (columns[key].template) {
                     if (typeof Mustache === "undefined") {
                       console.error("Mustache is required in order to use the template option")
@@ -291,7 +326,9 @@
           if (options.actions) {
             $.each(options.actions, function(label, action) {
               var btn = $("<input type='button' value='" + label + "' />");
+
               actionCollection.append(btn)
+
               btn.click(function() {
                 var selectedObjects = [];
                 var ids = globalSelectAll.val() === "true" ? "*" : $(".gammaId:checked", grid).map(function() {
