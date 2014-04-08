@@ -132,7 +132,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable' />");
+                      var tbl = $("<table class='gammaGridTable table' />");
+                      var responsiveWrapper = $("<div class='table-responsive'></div>");
+
                       for (var i = 0; i < data.length; i++) {
                           if (data[i].id) {
                               dataHash[data[i].id] = data[i];
@@ -275,7 +277,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                           }
                           tbl.append(tr);
                       }
-                      grid.append(tbl);
+
+                      responsiveWrapper.append(tbl);
+                      grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
 
                       var actionCollection = $("<div class='actionCollection' />");
