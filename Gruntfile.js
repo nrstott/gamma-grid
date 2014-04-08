@@ -44,13 +44,18 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
-        globals: {}
+        globals: {
+          jQuery: false,
+          window: false,
+          console: false,
+          Mustache: false
+        }
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
       lib_test: {
-        src: ['public/**/*.js']
+        src: ['public/js/gammaGrid.js']
       }
     },
     qunit: {
