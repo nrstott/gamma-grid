@@ -331,13 +331,20 @@
 
               btn.click(function() {
                 var selectedObjects = [];
-                var ids = globalSelectAll.val() === "true" ? "*" : $(".gammaId:checked", grid).map(function() {
-                  selectedObjects.push(dataHash[this.value]);
-                  return this.value;
-                });
+                var ids = globalSelectAll.val() === "true" ? "*" : getSelectedIds();
 
                 action.call(context, ids, selectedObjects);
+
+                function getSelectedIds () {
+                  var selected = $(".gammaId:checked", grid).map(function() {
+                    selectedObjects.push(dataHash[this.value]);
+                    return this.value;
+                  });
+                  
+                  return selected;
+                }
               });
+
               //todo add menu logic if there are nested keys 
             });
           }
