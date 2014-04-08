@@ -1,11 +1,10 @@
 /*! gamma-grid - v0.1.0 - 2014-03-14
 * Copyright (c) 2014 ; Licensed  */
 (function($) {
-  $.fn.gammaGrid = function(options, cb) {
+  $.fn.gammaGrid = function (options) {
     if (!Object.keys) {
       Object.keys = function(obj) {
-        var keys = []
-          , k;
+        var keys = [], k;
 
         for (k in obj) {
           if (Object.prototype.hasOwnProperty.call(obj, k)) {
@@ -26,8 +25,8 @@
         }
       }
 
-      if (query.lastIndexOf("&") == query.length-1){
-        query = query.substring(0, query.length-1);
+      if (query.lastIndexOf("&") === query.length - 1){
+        query = query.substring(0, query.length - 1);
       }
 
       return  query;
@@ -37,7 +36,7 @@
       var hash, pairs;
 
       if (query.indexOf("?") === 0){
-        query = query.substring(1);   
+        query = query.substring(1);
       }
 
       hash = {};
@@ -53,7 +52,6 @@
 
     var grid = this;
     var context = {};
-    var body = $("body");
 
     grid.addClass("gammaGrid");
     //init data 
@@ -70,7 +68,7 @@
       
       prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
       
-      if (end == 0) {
+      if (end === 0) {
           return "<div class='gammaPager'>No Results</div>";
       } else {
           return "<div class='gammaPager'>" + prev + " Showing " + start + " to " + end + " of " + count + next + "</div>";
@@ -94,7 +92,8 @@
       initialOptions = options.baseUrl.substring(options.baseUrl.indexOf("?"));
       
       if (initialOptions) {
-        var originalOptions = queryToHash(initialOptions)
+        var originalOptions = queryToHash(initialOptions);
+
         for(var key in originalOptions) {
           if (!queryHash[key]){
             queryHash[key] = originalOptions[key];
@@ -108,7 +107,7 @@
       var loadingDiv = $("<div class='loading' />");
       var url = dataUrl + (dataUrl.indexOf("?") > -1 ? "&" + query : "?" + query);
       
-      grid.html("")
+      grid.html("");
       grid.append(loadingDiv);
       
       $.ajax(url, {
@@ -127,13 +126,14 @@
           if (options.search) {
             var searchValue = "";
             
-            if (queryHash['search']) {
-              searchValue = " value=" + queryHash['search'];
+            if (queryHash.search) {
+              searchValue = " value=" + queryHash.search;
             }
 
-            $(document).on('click', '.gammaSearch .clearText', function() {
-              $(this).parent().find('input').val('');
-              delete queryHash['search'];
+            $(document).on("click", ".gammaSearch .clearText", function() {
+              $(this).parent().find("input").val("");
+
+              delete queryHash.search;
 
               query = hashToQuery(queryHash);
               window.location.search = query;
@@ -148,7 +148,7 @@
           for (var i = 0; i < data.length; i++) {
             var alternate = "odd";
             
-            if (i % 2 == 0) {
+            if (i % 2 === 0) {
               alternate = "even";
             }
             
@@ -164,7 +164,7 @@
               var thead = $("<thead />");
 
               for (var key in columns) {
-                if (key == "id") {
+                if (key === "id") {
                   var headerRow = $("<th class='gammaGridColumnHeader'></th>");
                   var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
 
@@ -219,7 +219,7 @@
 
                 } else {
 
-                  var shouldSort = (columns[key] == null) ? false : columns[key].sort ? columns[key].sort : false;
+                  var shouldSort = (columns[key] === null) ? false : columns[key].sort ? columns[key].sort : false;
                   
                   if (shouldSort !== false) {
                     shouldSort &= result.sort !== key;
@@ -236,12 +236,12 @@
                       queryHash.take = options.pageSize;
                       context.load(tmpQuery);
                       return false;
-                    })
+                    });
                   }
                   
                   var th = $("<th class='gammaGridColumnHeader' ></th>");
                   
-                  if (key == result.sort) {
+                  if (key === result.sort) {
                     th.addClass("currentSort");
                   }
 
@@ -257,16 +257,16 @@
               tr = $("<tr class='gammaGridRow' />");
             }
 
-            for (var key in columns) {
+            for (var columnKey in columns) {
               var td;
 
-              if (key == "id") {
-                var chkbox = $("<input type='checkbox' class='gammaId' value='" + obj[key] + "' />");
+              if (columnKey === "id") {
+                var chkbox = $("<input type='checkbox' class='gammaId' value='" + obj[columnKey] + "' />");
                 
                 chkbox.click(function() {
                   var selectedBox = $(this);
                   
-                  if (selectedBox.attr('checked')) {
+                  if (selectedBox.attr("checked")) {
                     selectedBox.parent().parent().addClass("selected");
                   } else {
                     selectedBox.parent().parent().removeClass("selected");
@@ -276,14 +276,14 @@
                 td = $("<td class='gammaGridColumnData' ></td>");
                 td.append(chkbox);
               } else {
-                var formattedData = dataFormatters[key] ? dataFormatters[key](obj[key], obj) : obj[key];
+                var formattedData = dataFormatters[columnKey] ? dataFormatters[columnKey](obj[columnKey], obj) : obj[columnKey];
 
                 if (!formattedData) {
-                  formattedData = '';
+                  formattedData = "";
                 }
 
-                if (columns[key].isLink) {
-                  var href = columns[key].href;
+                if (columns[columnKey].isLink) {
+                  var href = columns[columnKey].href;
                   
                   href.match(/{{\s*[\w\.]+\s*}}/g).map(function(str) {
                     var field = str.substring(2, str.length - 2);
@@ -295,11 +295,11 @@
                 
                 } else {
 
-                  if (columns[key].template) {
+                  if (columns[columnKey].template) {
                     if (typeof Mustache === "undefined") {
-                      console.error("Mustache is required in order to use the template option")
+                      console.error("Mustache is required in order to use the template option");
                     } else {
-                      formattedData = Mustache.render(columns[key].template, obj);
+                      formattedData = Mustache.render(columns[columnKey].template, obj);
                     }
                   }
 
@@ -307,7 +307,7 @@
                 }
               }
               
-              if (key == result.sort) {
+              if (columnKey === result.sort) {
                 td.addClass("currentSort");
               }
 
@@ -318,7 +318,7 @@
           }
           
           grid.append(tbl);
-          grid.append(pager(result.start, result.end, result.count, queryHash))
+          grid.append(pager(result.start, result.end, result.count, queryHash));
 
           var actionCollection = $("<div class='actionCollection' />");
           var globalSelectAll = $("#globalSelectAll");
@@ -327,7 +327,7 @@
             $.each(options.actions, function(label, action) {
               var btn = $("<input type='button' value='" + label + "' />");
 
-              actionCollection.append(btn)
+              actionCollection.append(btn);
 
               btn.click(function() {
                 var selectedObjects = [];
@@ -356,7 +356,7 @@
           }
         },
         error: function(err) {
-          console.error("An error occurred during api call", err)
+          console.error("An error occurred during api call", err);
         }
       });
     }; //end of content.load
