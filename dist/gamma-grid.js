@@ -1,4 +1,4 @@
-/*! gamma-grid - v0.1.1 - 2014-04-01
+/*! gamma-grid - v0.1.4 - 2014-04-08
 * Copyright (c) 2014 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
@@ -49,10 +49,10 @@
           var dataUrl = options.baseUrl.indexOf("?") > -1 ?  options.baseUrl.substring(0,options.baseUrl.indexOf("?")) : options.baseUrl;
           var pager = options.pager || function(start, end, count, queryHash) {
                   queryHash.skip = end;
-                  var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
+                  var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&rarr;</a>" : "";
                   queryHash.skip = start - options.pageSize - 1;
                   queryHash.skip = queryHash.skip < 0 ? 0 : queryHash.skip;
-                  var prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+                  var prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&larr;Previous </a>" : "";
                   if (end == 0) {
                       return "<div class='gammaPager'>No Results</div>";
                   } else {
@@ -115,7 +115,9 @@
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable' />");
+                      var tbl = $("<table class='gammaGridTable table' />");
+                      var responsiveWrapper = $("<div class='table-responsive'></div>");
+
                       for (var i = 0; i < data.length; i++) {
                           if (data[i].id) {
                               dataHash[data[i].id] = data[i];
@@ -258,7 +260,9 @@
                           }
                           tbl.append(tr);
                       }
-                      grid.append(tbl);
+
+                      responsiveWrapper.append(tbl);
+                      grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
 
                       var actionCollection = $("<div class='actionCollection' />");
