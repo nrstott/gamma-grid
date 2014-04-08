@@ -82,12 +82,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
       var next, prev;
 
       queryHash.skip = end;
-      next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
+      next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&rarr;</a>" : "";
       
       queryHash.skip = start - options.pageSize - 1;
       queryHash.skip = queryHash.skip < 0 ? 0 : queryHash.skip;
       
-      prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+      prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&larr;Previous </a>" : "";
       
       if (end === 0) {
           return "<div class='gammaPager'>No Results</div>";
@@ -165,7 +165,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           }
 
           var isHeader = true;
-          var tbl = $("<table class='gammaGridTable' />");
+          var tbl = $("<table class='gammaGridTable table' />");
+          var responsiveWrapper = $("<div class='table-responsive'></div>");
+
           for (var i = 0; i < data.length; i++) {
             var alternate = "odd";
             
@@ -338,7 +340,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
             tbl.append(tr);
           }
           
-          grid.append(tbl);
+          responsiveWrapper.append(tbl);
+          grid.append(responsiveWrapper);
           grid.append(pager(result.start, result.end, result.count, queryHash));
 
           var actionCollection = $("<div class='actionCollection' />");
