@@ -66,10 +66,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           var dataUrl = options.baseUrl.indexOf("?") > -1 ?  options.baseUrl.substring(0,options.baseUrl.indexOf("?")) : options.baseUrl;
           var pager = options.pager || function(start, end, count, queryHash) {
                   queryHash.skip = end;
-                  var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&nbsp;&mdash;&gt;</a>" : "";
+                  var next = (end < count) ? "<a href='?" + hashToQuery(queryHash) + "'>Next&rarr;</a>" : "";
                   queryHash.skip = start - options.pageSize - 1;
                   queryHash.skip = queryHash.skip < 0 ? 0 : queryHash.skip;
-                  var prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&lt;&mdash;&nbsp;Previous </a>" : "";
+                  var prev = start !== 1 ? "<a href='?" + hashToQuery(queryHash) + "'>&larr;Previous </a>" : "";
                   if (end == 0) {
                       return "<div class='gammaPager'>No Results</div>";
                   } else {
