@@ -1,4 +1,4 @@
-/*! gamma-grid - v0.1.0 - 2014-03-14
+/*! gamma-grid - v0.1.1 - 2014-08-03
 * Copyright (c) 2014 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
@@ -36,7 +36,7 @@
               var pairs = query.split("&");
               for (var i = 0; i < pairs.length; i++) {
                   var pair = pairs[i].split("=");
-                  hash[pair[0]] = pair[1];
+                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace("+", " ");
               }
               return hash;
           }
@@ -70,8 +70,8 @@
               query = query || window.location.search;
               query = query.replace("?", "");
               var queryHash = queryToHash(query);
-
-              var initialOptions = options.baseUrl.substring(options.baseUrl.indexOf("?"));
+              queryHash.take = options.pageSize;
+              var initialOptions = options.baseUrl.indexOf("?") > -1 ? options.baseUrl.substring(options.baseUrl.indexOf("?")): "";
               if (initialOptions){
                 var originalOptions = queryToHash(initialOptions)
                 for(var key in originalOptions)
@@ -102,7 +102,7 @@
                       if (options.search) {
                           var searchValue = "";
                           if (queryHash['search']) {
-                              searchValue = " value=" + queryHash['search'];
+                              searchValue = " value='" + decodeURIComponent(queryHash['search']) + "'";
                           }
                           $(document).on('click', '.gammaSearch .clearText', function() {
                               $(this).parent().find('input').val('');
@@ -131,7 +131,7 @@
                               var thead = $("<thead />");
                               for (var key in columns) {
                                   if (key == "id") {
-                                      var headerRow = $("<th class='gammaGridColumnHeader'></th>");
+                                      var headerRow = $("<th id='gammaGridHeader_"+key+"' class='gammaGridColumnHeader'></th>");
                                       var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
 
                                       var globalSelectAll = $("<input type='hidden' value='false' id='globalSelectAll'/>");
@@ -198,7 +198,7 @@
                                               return false;
                                           })
                                       }
-                                      var th = $("<th class='gammaGridColumnHeader' ></th>");
+                                      var th = $("<th id='gammaGridHeader_"+key+"' class='gammaGridColumnHeader' ></th>");
                                       if (key == result.sort) {
                                           th.addClass("currentSort");
                                       }
