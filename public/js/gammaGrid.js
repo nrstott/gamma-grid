@@ -110,7 +110,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                   dataType: "json",
                   cache: false,
                   success: function(result) {
-                      grid.html("");
+              	      if (options.onData){
+			options.onData(result);
+		      }
+		      grid.html("");
                       var data = result.results;
                       context.count = result.count;
                       context.start = result.start;
