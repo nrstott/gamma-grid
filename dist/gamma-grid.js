@@ -266,7 +266,7 @@
 
                       if (options.actions) {
                           $.each(options.actions, function(label, action) {
-                              var btn = $("<input type='button' value='" + label + "' />");
+                              var btn = $("<input type='button' id='" +label+ "' value='" + label + "' />");
                               actionCollection.append(btn)
                               btn.click(function() {
 
