@@ -110,7 +110,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                   dataType: "json",
                   cache: false,
                   success: function(result) {
-                      grid.html("");
+              	      if (options.onData){
+			options.onData(result);
+		      }
+		      grid.html("");
                       var data = result.results;
                       context.count = result.count;
                       context.start = result.start;
@@ -149,7 +152,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                           if (isHeader) {
                               var thead = $("<thead />");
                               for (var key in columns) {
-                                  if (key == "id") {
+                                  if (key == "_id" || key == "id") {
                                       var headerRow = $("<th id='gammaGridHeader_"+key+"' class='gammaGridColumnHeader'></th>");
                                       var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
 
@@ -233,7 +236,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                           }
                           for (var key in columns) {
                               var td;
-                              if (key == "id") {
+                              if (key === "_id" || key ==="id") {
                                   var chkbox = $("<input type='checkbox' class='gammaId' value='" + obj[key] + "' />");
                                   chkbox.click(function() {
                                       var selectedBox = $(this);
