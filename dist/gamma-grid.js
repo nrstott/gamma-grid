@@ -1,4 +1,4 @@
-/*! gamma-grid - v0.1.1 - 2014-08-03
+/*! gamma-grid - v0.1.5 - 2014-11-25
 * Copyright (c) 2014 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
@@ -93,7 +93,10 @@
                   dataType: "json",
                   cache: false,
                   success: function(result) {
-                      grid.html("");
+              	      if (options.onData){
+			options.onData(result);
+		      }
+		      grid.html("");
                       var data = result.results;
                       context.count = result.count;
                       context.start = result.start;
@@ -130,7 +133,7 @@
                           if (isHeader) {
                               var thead = $("<thead />");
                               for (var key in columns) {
-                                  if (key == "id") {
+                                  if (key == "_id" || key == "id") {
                                       var headerRow = $("<th id='gammaGridHeader_"+key+"' class='gammaGridColumnHeader'></th>");
                                       var selectAll = $("<input type='checkbox' class='gammaSelectAll' />");
 
@@ -214,7 +217,7 @@
                           }
                           for (var key in columns) {
                               var td;
-                              if (key == "id") {
+                              if (key === "_id" || key ==="id") {
                                   var chkbox = $("<input type='checkbox' class='gammaId' value='" + obj[key] + "' />");
                                   chkbox.click(function() {
                                       var selectedBox = $(this);
@@ -266,7 +269,7 @@
 
                       if (options.actions) {
                           $.each(options.actions, function(label, action) {
-                              var btn = $("<input type='button' id='" +label+ "' value='" + label + "' />");
+                              var btn = $("<input type='button' value='" + label + "' />");
                               actionCollection.append(btn)
                               btn.click(function() {
 
