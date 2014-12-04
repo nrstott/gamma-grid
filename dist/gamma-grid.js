@@ -118,7 +118,12 @@
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable table' />");
+                      if (options.tableClasses) {
+                          var tblClasses = options.tableClasses;
+                      } else {
+                          var tblClasses = "";
+                      }
+                      var tbl = $("<table class='gammaGridTable table " + tblClasses + "'/>");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
