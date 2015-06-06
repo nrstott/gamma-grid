@@ -118,7 +118,7 @@
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable table' />");
+                      var tbl = $("<table class='gammaGridTable' />");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
@@ -265,8 +265,8 @@
                           tbl.append(tr);
                       }
 
-                      responsiveWrapper.append(tbl);
-                      grid.append(responsiveWrapper);
+                      //responsiveWrapper.append(tbl);
+                      grid.append(tbl);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
 
                       var actionCollection = $("<div class='actionCollection' />");

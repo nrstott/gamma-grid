@@ -135,7 +135,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable table' />");
+                      var tbl = $("<table class='gammaGridTable' />");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
