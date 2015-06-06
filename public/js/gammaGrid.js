@@ -291,7 +291,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
                       if (options.actions) {
                           $.each(options.actions, function(label, action) {
-                              var btn = $("<input type='button' value='" + label + "' />");
+                              var btn = $("<input id='gamma_btn_"+label+"' type='button' value='" + label + "' />");
                               actionCollection.append(btn)
                               btn.click(function() {
 
