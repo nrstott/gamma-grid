@@ -53,7 +53,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
               var pairs = query.split("&");
               for (var i = 0; i < pairs.length; i++) {
                   var pair = pairs[i].split("=");
-                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace(/\+/gi, " ");
+                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
               }
               return hash;
           }

@@ -1,6 +1,6 @@
 {
   "name": "gamma-grid",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "directories": {
     "lib": "./src"
   },

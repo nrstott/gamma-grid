@@ -1,5 +1,5 @@
-/*! gamma-grid - v0.1.5 - 2014-11-25
-* Copyright (c) 2014 ; Licensed  */
+/*! gamma-grid - v0.1.9 - 2015-07-13
+* Copyright (c) 2015 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
           if (!Object.keys) {
@@ -36,7 +36,7 @@
               var pairs = query.split("&");
               for (var i = 0; i < pairs.length; i++) {
                   var pair = pairs[i].split("=");
-                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace("+", " ");
+                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
               }
               return hash;
           }
@@ -265,8 +265,8 @@
                           tbl.append(tr);
                       }
 
-                      //responsiveWrapper.append(tbl);
-                      grid.append(tbl);
+                      responsiveWrapper.append(tbl);
+                      grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
 
                       var actionCollection = $("<div class='actionCollection' />");
@@ -274,7 +274,7 @@
 
                       if (options.actions) {
                           $.each(options.actions, function(label, action) {
-                              var btn = $("<input type='button' value='" + label + "' />");
+                              var btn = $("<input id='gamma_btn_"+label+"' type='button' value='" + label + "' />");
                               actionCollection.append(btn)
                               btn.click(function() {
 
