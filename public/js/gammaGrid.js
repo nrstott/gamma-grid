@@ -285,7 +285,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                       responsiveWrapper.append(tbl);
                       grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
-
+                      $(".gammaSearch").submit(function(){
+                          window.location.search = "search=" + encodeURIComponent($(".gammaSearchField").val());
+                          return false;
+                      })
                       var actionCollection = $("<div class='actionCollection' />");
                       var globalSelectAll = $("#globalSelectAll");
 

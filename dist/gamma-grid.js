@@ -1,4 +1,4 @@
-/*! gamma-grid - v0.1.9 - 2015-07-13
+/*! gamma-grid - v0.2.0 - 2015-07-13
 * Copyright (c) 2015 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
@@ -268,7 +268,10 @@
                       responsiveWrapper.append(tbl);
                       grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
-
+                      $(".gammaSearch").submit(function(){
+                          window.location.search = "search=" + encodeURIComponent($(".gammaSearchField").val());
+                          return false;
+                      })
                       var actionCollection = $("<div class='actionCollection' />");
                       var globalSelectAll = $("#globalSelectAll");
 
