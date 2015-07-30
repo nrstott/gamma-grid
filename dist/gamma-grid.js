@@ -98,6 +98,7 @@
 		      }
 		      grid.html("");
                       var data = result.results;
+                      columns = columns || result.columns; // allow columns to be passed in result
                       context.count = result.count;
                       context.start = result.start;
                       context.end = result.end;
