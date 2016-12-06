@@ -266,6 +266,12 @@
                               if (key == result.sort) {
                                   td.addClass("currentSort");
                               }
+
+                              // Add class to row
+                              if (obj["cssClass"]) {
+                                  tr.addClass(obj["cssClass"])
+                              }
+
                               tr.append(td);
                           }
                           tbl.append(tr);
