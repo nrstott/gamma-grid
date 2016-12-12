@@ -1,4 +1,4 @@
-/*! gamma-grid - v0.2.1 - 2016-12-12
+/*! gamma-grid - v0.3.0 - 2016-12-12
 * Copyright (c) 2016 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
@@ -64,6 +64,7 @@
           var dataFormatters = options.dataFormatters || {};
           var columns = options.columns;
           var dataHash = {};
+          var subRowTemplate = options.subRowTemplate || null;
 
 
           context.load = function(query) {
@@ -125,6 +126,7 @@
                           var tblClasses = "";
                       }
                       var tbl = $("<table class='gammaGridTable table " + tblClasses + "'/>");
+                      var tbody = $("<tbody />");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
@@ -274,9 +276,23 @@
 
                               tr.append(td);
                           }
-                          tbl.append(tr);
-                      }
+                          tbody.append(tr);
 
+                          // Allow to display additional data below each row.  
+                          if (subRowTemplate) {
+                              if (typeof Mustache === "undefined") {
+                                  console.error("Mustache is required in order to use the subRowTemplate option")
+                              } else {
+                                  tbody.append($("<tr class='gammaGridSpacerRow' style='display: none;' />"));
+                                  var subRowHtml = Mustache.render(subRowTemplate, obj);
+                                  td = $("<td colspan='" + Object.keys(obj).length + "'>" + subRowHtml + "</tr>")
+                                  tr = $("<tr class='gammaGridSubRow hidden' />");
+                                  tr.append(td);
+                                  tbody.append(tr);
+                              }
+                          }
+                      }
+                      tbl.append(tbody);
                       responsiveWrapper.append(tbl);
                       grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
