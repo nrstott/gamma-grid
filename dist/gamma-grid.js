@@ -1,5 +1,5 @@
-/*! gamma-grid - v0.2.0 - 2015-07-13
-* Copyright (c) 2015 ; Licensed  */
+/*! gamma-grid - v0.2.1 - 2016-12-12
+* Copyright (c) 2016 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
           if (!Object.keys) {
