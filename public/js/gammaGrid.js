@@ -81,6 +81,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
           var dataFormatters = options.dataFormatters || {};
           var columns = options.columns;
           var dataHash = {};
+          var subRowTemplate = options.subRowTemplate || null;
 
 
           context.load = function(query) {
@@ -291,9 +292,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
                               tr.append(td);
                           }
-                          tbl.append(tr);
-                      }
+                          tbody.append(tr);
 
+                          // Allow to display additional data below each row.  
+                          if (subRowTemplate) {
+                              if (typeof Mustache === "undefined") {
+                                  console.error("Mustache is required in order to use the subRowTemplate option")
+                              } else {
+                                  tbody.append($("<tr class='gammaGridSpacerRow' style='display: none;' />"));
+                                  var subRowHtml = Mustache.render(subRowTemplate, obj);
+                                  td = $("<td colspan='" + Object.keys(obj).length + "'>" + subRowHtml + "</tr>")
+                                  tr = $("<tr class='gammaGridSubRow hidden' />");
+                                  tr.append(td);
+                                  tbody.append(tr);
+                              }
+                          }
+                      }
+                      tbl.append(tbody);
                       responsiveWrapper.append(tbl);
                       grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
