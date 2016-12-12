@@ -98,6 +98,7 @@
 		      }
 		      grid.html("");
                       var data = result.results;
+                      columns = columns || result.columns; // allow columns to be passed in result
                       context.count = result.count;
                       context.start = result.start;
                       context.end = result.end;
@@ -118,7 +119,12 @@
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable' />");
+                      if (options.tableClasses) {
+                          var tblClasses = options.tableClasses;
+                      } else {
+                          var tblClasses = "";
+                      }
+                      var tbl = $("<table class='gammaGridTable table " + tblClasses + "'/>");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
@@ -260,6 +266,12 @@
                               if (key == result.sort) {
                                   td.addClass("currentSort");
                               }
+
+                              // Add class to row
+                              if (obj["cssClass"]) {
+                                  tr.addClass(obj["cssClass"])
+                              }
+
                               tr.append(td);
                           }
                           tbl.append(tr);
