@@ -143,6 +143,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                           var tblClasses = "";
                       }
                       var tbl = $("<table class='gammaGridTable table " + tblClasses + "'/>");
+                      var tbody = $("<tbody />");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
