@@ -120,6 +120,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
                       context.count = result.count;
                       context.start = result.start;
                       context.end = result.end;
+                      context.data = data; // This allows the data to be passed to other functions from the afterLoad function 
 
                       if (options.search) {
                           var searchValue = "";

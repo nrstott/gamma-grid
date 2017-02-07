@@ -1,5 +1,5 @@
-/*! gamma-grid - v0.3.0 - 2016-12-12
-* Copyright (c) 2016 ; Licensed  */
+/*! gamma-grid - v0.4.0 - 2017-02-06
+* Copyright (c) 2017 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
           if (!Object.keys) {
@@ -103,6 +103,7 @@
                       context.count = result.count;
                       context.start = result.start;
                       context.end = result.end;
+                      context.data = data; // This allows the data to be passed to other functions from the afterLoad function 
 
                       if (options.search) {
                           var searchValue = "";
