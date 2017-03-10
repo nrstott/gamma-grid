@@ -83,6 +83,7 @@ A dictionary where the key is the property name you want included in the grid an
    A mustache.js template to use for displaying the data in this column.  If omitted, the data will be just text inside the td of the table.
 
  If the columns are omitted and not included in the JSON result, all properties will be displayed in the grid with the property name as the column header.
+ 
 ### pageSize
 The number of items to show on each page.
 ### search
