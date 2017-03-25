@@ -1,5 +1,5 @@
-/*! gamma-grid - v0.1.5 - 2014-11-25
-* Copyright (c) 2014 ; Licensed  */
+/*! gamma-grid - v0.4.0 - 2017-02-06
+* Copyright (c) 2017 ; Licensed  */
 (function($) {
       $.fn.gammaGrid = function(options, cb) {
           if (!Object.keys) {
@@ -36,7 +36,7 @@
               var pairs = query.split("&");
               for (var i = 0; i < pairs.length; i++) {
                   var pair = pairs[i].split("=");
-                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace("+", " ");
+                  hash[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
               }
               return hash;
           }
@@ -64,6 +64,7 @@
           var dataFormatters = options.dataFormatters || {};
           var columns = options.columns;
           var dataHash = {};
+          var subRowTemplate = options.subRowTemplate || null;
 
 
           context.load = function(query) {
@@ -98,9 +99,11 @@
 		      }
 		      grid.html("");
                       var data = result.results;
+                      columns = columns || result.columns; // allow columns to be passed in result
                       context.count = result.count;
                       context.start = result.start;
                       context.end = result.end;
+                      context.data = data; // This allows the data to be passed to other functions from the afterLoad function 
 
                       if (options.search) {
                           var searchValue = "";
@@ -118,7 +121,13 @@
                       }
 
                       var isHeader = true;
-                      var tbl = $("<table class='gammaGridTable table' />");
+                      if (options.tableClasses) {
+                          var tblClasses = options.tableClasses;
+                      } else {
+                          var tblClasses = "";
+                      }
+                      var tbl = $("<table class='gammaGridTable table " + tblClasses + "'/>");
+                      var tbody = $("<tbody />");
                       var responsiveWrapper = $("<div class='table-responsive'></div>");
 
                       for (var i = 0; i < data.length; i++) {
@@ -260,21 +269,44 @@
                               if (key == result.sort) {
                                   td.addClass("currentSort");
                               }
+
+                              // Add class to row
+                              if (obj["cssClass"]) {
+                                  tr.addClass(obj["cssClass"])
+                              }
+
                               tr.append(td);
                           }
-                          tbl.append(tr);
-                      }
+                          tbody.append(tr);
 
+                          // Allow to display additional data below each row.  
+                          if (subRowTemplate) {
+                              if (typeof Mustache === "undefined") {
+                                  console.error("Mustache is required in order to use the subRowTemplate option")
+                              } else {
+                                  tbody.append($("<tr class='gammaGridSpacerRow' style='display: none;' />"));
+                                  var subRowHtml = Mustache.render(subRowTemplate, obj);
+                                  td = $("<td colspan='" + Object.keys(obj).length + "'>" + subRowHtml + "</tr>")
+                                  tr = $("<tr class='gammaGridSubRow hidden' />");
+                                  tr.append(td);
+                                  tbody.append(tr);
+                              }
+                          }
+                      }
+                      tbl.append(tbody);
                       responsiveWrapper.append(tbl);
                       grid.append(responsiveWrapper);
                       grid.append(pager(result.start, result.end, result.count, queryHash))
-
+                      $(".gammaSearch").submit(function(){
+                          window.location.search = "search=" + encodeURIComponent($(".gammaSearchField").val());
+                          return false;
+                      })
                       var actionCollection = $("<div class='actionCollection' />");
                       var globalSelectAll = $("#globalSelectAll");
 
                       if (options.actions) {
                           $.each(options.actions, function(label, action) {
-                              var btn = $("<input type='button' value='" + label + "' />");
+                              var btn = $("<input id='gamma_btn_"+label+"' type='button' value='" + label + "' />");
                               actionCollection.append(btn)
                               btn.click(function() {
 
